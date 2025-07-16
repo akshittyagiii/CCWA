@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script defer src="https://widget-js.cometchat.io/v3/cometchatwidget.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CampusVibe</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      color: #fff;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .header {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.03);
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(8px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .app-title {
+      font-size: 22px;
+      font-weight: bold;
+      background: linear-gradient(90deg, #00f260, #0575e6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: 1px;
+    }
+    .right-items {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+    .nav-btn {
+      cursor: pointer;
+      color: #00ffe0;
+      font-weight: 500;
+      transition: 0.3s;
+    }
+    .nav-btn:hover {
+      color: #1affd5;
+      transform: scale(1.05);
+    }
+    .notification-badge {
+      background: #00ffe0;
+      color: #000;
+      font-size: 11px;
+      padding: 2px 6px;
+      border-radius: 999px;
+      position: absolute;
+      top: -6px;
+      right: -8px;
+      display: none;
+      justify-content: center;
+      align-items: center;
+    }
+    .dropdown {
+      position: absolute;
+      top: 120%;
+      right: 0;
+      background: #1a1a1a;
+      border-radius: 8px;
+      padding: 10px;
+      width: 240px;
+      display: none;
+      flex-direction: column;
+      z-index: 10;
+      box-shadow: 0 4px 20px rgba(0,255,255,0.2);
+    }
+    .dropdown.active { display: flex; }
+    .dropdown-header {
+      font-weight: 600;
+      margin-bottom: 10px;
+      border-bottom: 1px solid #333;
+      padding-bottom: 5px;
+    }
+    .notification-item {
+      padding: 6px 0;
+      border-bottom: 1px solid #333;
+    }
+    .content {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+    }
+    .section { display: none; }
+    .section.active { display: block; }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="app-title">CampusVibe</div>
+    <div class="right-items">
+      <div class="nav-btn" onclick="showSection('chatSection')">💬 Chat</div>
+      <div class="nav-btn" onclick="toggleNotifications()">🔔 Notifications</div>
+      <div class="nav-btn" onclick="showSection('updatesSection')">📣 Updates</div>
+      <div class="nav-btn" onclick="showSection('eventsSection')">🎓 Events</div>
+      <div class="nav-btn" onclick="showSection('notesSection')">📚 Notes</div>
+    </div>
+    <div id="notificationBadge" class="notification-badge"></div>
+    <div id="notificationDropdown" class="dropdown"></div>
+  </div>
+
+  <div class="content">
+    <!-- ✅ COMETCHAT Section -->
+    <div id="chatSection" class="section active">
+      <div id="cometchat"></div>
+    </div>
+
+    <div id="updatesSection" class="section">
+      <h2>📣 Updates</h2>
+      <p>This section will show college updates soon.</p>
+    </div>
+
+    <div id="eventsSection" class="section">
+      <h2>🎓 Events</h2>
+      <p>Here you’ll see upcoming events like tech fest, sports day etc.</p>
+    </div>
+
+    <div id="notesSection" class="section">
+      <h2>📚 Notes</h2>
+      <p>This is where students can share and view class notes for different subjects.</p>
+    </div>
+  </div>
+
+  <!-- ✅ CometChat Init + Launch -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      CometChatWidget.init({
+        appID: "YOUR_APP_ID",            // 🔁 Replace this
+        appRegion: "YOUR_APP_REGION",    // 🔁 Example: "us", "in"
+        authKey: "YOUR_AUTH_KEY"         // 🔁 Replace this
+      }).then(() => {
+        CometChatWidget.login({
+          uid: "UID_OF_LOGGED_IN_USER"   // 🔁 Replace this
+        }).then(() => {
+          CometChatWidget.launch({
+            widgetID: "cometchat",
+            roundedCorners: true,
+            docked: false,
+            height: "600px",
+            width: "100%"
+          });
+        }, error => {
+          console.error("Login failed:", error);
+        });
+      }, error => {
+        console.error("Init failed:", error);
+      });
+    });
+  </script>
+
+  <!-- 🔔 Notifications & Section Switch -->
+  <script>
+    const notifications = [
+      { title: 'New Message', message: 'Someone replied to your post.' },
+      { title: 'Event Reminder', message: 'TechFest starts tomorrow at 10 AM!' }
+    ];
+
+    function toggleNotifications() {
+      const dropdown = document.getElementById('notificationDropdown');
+      dropdown.classList.toggle('active');
+      updateNotificationBadge();
+    }
+
+    function updateNotificationBadge() {
+      const badge = document.getElementById('notificationBadge');
+      const dropdown = document.getElementById('notificationDropdown');
+
+      if (notifications.length === 0) {
+        badge.style.display = 'none';
+        dropdown.innerHTML = `
+          <div class="dropdown-header">Notifications</div>
+          <div class="notification-empty">No new notifications</div>
+        `;
+      } else {
+        badge.textContent = notifications.length;
+        badge.style.display = 'flex';
+        let notificationHTML = '<div class="dropdown-header">Notifications</div>';
+        notifications.forEach(notification => {
+          notificationHTML += `
+            <div class="notification-item">
+              <strong>${notification.title}</strong><br>
+              <small style="color: #aaa;">${notification.message}</small>
+            </div>
+          `;
+        });
+        dropdown.innerHTML = notificationHTML;
+      }
+    }
+
+    function showSection(sectionId) {
+      document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+      document.getElementById(sectionId).classList.add('active');
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      updateNotificationBadge();
+    });
+
+    document.addEventListener('click', (event) => {
+      if (!event.target.closest('.nav-btn')) {
+        document.getElementById('notificationDropdown')?.classList.remove('active');
+      }
+    });
+  </script>
+</body>
+</html>
