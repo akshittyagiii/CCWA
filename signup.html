@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - YourProject</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #0a0a0a; color: #ffffff; display: flex; justify-content: center; align-items: center; min-height: 100vh; overflow: hidden; }
+        .bg-animation { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background: linear-gradient(45deg, #f361a3, #a166e4, #f093fb, #f5576c, #4facfe, #00f2fe); background-size: 400% 400%; animation: gradientShift 15s ease infinite; }
+        @keyframes gradientShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        .auth-container { width: 100%; max-width: 420px; padding: 2rem; z-index: 10; }
+        .auth-box { background: rgba(22, 22, 22, 0.6); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; padding: 2.5rem; text-align: center; animation: fadeIn 0.5s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+        h2 { font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem; }
+        .form-subtitle { color: rgba(255, 255, 255, 0.7); margin-bottom: 2rem; }
+        .form-group { position: relative; margin-bottom: 1.5rem; }
+        .icon { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: rgba(255, 255, 255, 0.5); }
+        .form-input { width: 100%; padding: 1rem 1rem 1rem 2.5rem; background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 10px; color: #fff; font-size: 1rem; transition: all 0.3s ease; }
+        .form-input:focus { outline: none; border-color: #a166e4; box-shadow: 0 0 15px rgba(161, 102, 228, 0.5); }
+        .btn-submit { width: 100%; padding: 1rem; border: none; border-radius: 10px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; background: linear-gradient(45deg, #f361a3, #a166e4); color: white; margin-top: 1rem; }
+        .btn-submit:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(161, 102, 228, 0.4); }
+        .toggle-link { margin-top: 2rem; color: rgba(255, 255, 255, 0.7); }
+        .toggle-link a { color: #c9a3ff; font-weight: 600; text-decoration: none; }
+        .home-link { margin-top: 1rem; }
+        .home-link a { color: rgba(255, 255, 255, 0.6); text-decoration: none; font-size: 0.9rem; }
+        .modal-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(10, 10, 10, 0.5); backdrop-filter: blur(10px); z-index: 2000; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: opacity 0.4s ease; }
+        .modal-container.show { opacity: 1; visibility: visible; }
+        .modal-box { background: rgba(30, 30, 30, 0.8); border: 1px solid rgba(255, 255, 255, 0.1); padding: 3rem; border-radius: 20px; text-align: center; transform: scale(0.9); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .modal-container.show .modal-box { transform: scale(1); }
+        .success-icon { width: 80px; height: 80px; background: #2ecc71; border-radius: 50%; display: flex; justify-content: center; align-items: center; margin: 0 auto 1.5rem auto; font-size: 2.5rem; }
+        .modal-box h2 { font-size: 1.8rem; margin-bottom: 1rem; }
+        .modal-box p { color: rgba(255, 255, 255, 0.8); margin-bottom: 2rem; line-height: 1.5; }
+        .btn-continue { padding: 0.8rem 2rem; border: none; border-radius: 10px; font-weight: 600; cursor: pointer; background: #a166e4; color: white; }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+
+    <div class="auth-container">
+        <div class="auth-box">
+             <form id="signupForm">
+                <h2>Create Account</h2>
+                <p class="form-subtitle">Get started with us today!</p>
+                <div class="form-group">
+                    <i class="fas fa-user icon"></i>
+                    <input type="text" class="form-input" placeholder="Full Name" required>
+                </div>
+                <div class="form-group">
+                    <i class="fas fa-envelope icon"></i>
+                    <input type="email" class="form-input" placeholder="Email" required>
+                </div>
+                <div class="form-group">
+                    <i class="fas fa-lock icon"></i>
+                    <input type="password" class="form-input" placeholder="Password" required>
+                </div>
+                <button type="submit" class="btn-submit">Create Account</button>
+                <p class="toggle-link">Already have an account? <a href="login.html">Login</a></p>
+            </form>
+            <p class="home-link"><a href="landing.html"><i class="fas fa-arrow-left"></i> Back to Home</a></p>
+        </div>
+    </div>
+
+    <div class="modal-container" id="thankYouModal">
+        <div class="modal-box">
+            <div class="success-icon">
+                <i class="fas fa-check"></i>
+            </div>
+            <h2>Thank You!</h2>
+            <p>Thank you for registering with us.<br>You will receive a confirmation email on your registered email address shortly.</p>
+            <button class="btn-continue" id="continueBtn">Continue</button>
+        </div>
+    </div>
+
+    <script>
+        const signupForm = document.getElementById('signupForm');
+        const thankYouModal = document.getElementById('thankYouModal');
+        const continueBtn = document.getElementById('continueBtn');
+
+        signupForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            thankYouModal.classList.add('show');
+        });
+
+        continueBtn.addEventListener('click', function() {
+            thankYouModal.classList.remove('show');
+            // REDIRECT UPDATED HERE
+            window.location.href = 'landing.html';
+        });
+
+        thankYouModal.addEventListener('click', function(event) {
+            if (event.target === thankYouModal) {
+                thankYouModal.classList.remove('show');
+                // REDIRECT UPDATED HERE
+                window.location.href = 'landing.html';
+            }
+        });
+    </script>
+</body>
+</html>

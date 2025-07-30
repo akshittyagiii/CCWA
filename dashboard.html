@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - CampusVibe</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <script defer src="https://widget-js.cometchat.io/v3/cometchatwidget.js"></script>
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; line-height: 1.6; background: #0a0a0a; color: #ffffff; }
+        a { text-decoration: none; color: inherit; }
+        .bg-animation { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background: linear-gradient(45deg, #667eea, #764ba2, #f093fb, #f5576c, #4facfe, #00f2fe); background-size: 400% 400%; animation: gradientShift 15s ease infinite; }
+        @keyframes gradientShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        .navbar { padding: 1rem 2rem; background: rgba(22, 22, 22, 0.6); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255, 255, 255, 0.1); position: sticky; top: 0; z-index: 1000; }
+        .nav-container { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.8rem; font-weight: 800; color: #fff; }
+        .nav-menu { display: flex; align-items: center; gap: 1.5rem; }
+        .nav-item { position: relative; cursor: pointer; font-size: 1.2rem; color: rgba(255, 255, 255, 0.8); transition: color 0.3s ease; }
+        .nav-item:hover { color: #fff; }
+        .nav-item .icon-badge { position: absolute; top: -5px; right: -8px; background-color: #ff4d4d; color: white; border-radius: 50%; width: 18px; height: 18px; font-size: 0.7rem; display: flex; justify-content: center; align-items: center; font-weight: 600; border: 2px solid #0a0a0a; }
+        .dropdown { position: absolute; top: 150%; right: 0; width: 320px; background: rgba(30, 30, 30, 0.8); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; overflow: hidden; opacity: 0; visibility: hidden; transform: translateY(10px); transition: all 0.3s ease; }
+        .dropdown.show { opacity: 1; visibility: visible; transform: translateY(0); }
+        .dropdown-header { padding: 1rem; font-weight: 600; font-size: 1rem; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+        .dropdown-item { padding: 1rem; display: flex; align-items: center; gap: 1rem; transition: background-color 0.2s ease; cursor: pointer; }
+        .dropdown-item:hover { background-color: rgba(255, 255, 255, 0.05); }
+        .dropdown-item .item-text-wrapper { flex: 1; }
+        .dropdown-item .item-text { color: rgba(255, 255, 255, 0.8); font-size: 0.9rem; line-height: 1.4; }
+        .dropdown-item .item-title { color: #fff; font-weight: 500; }
+        .dropdown-item .item-icon { font-size: 1.2rem; width: 20px; text-align: center; color: #a166e4; }
+        #logout-btn { color: #ff6b6b; border-top: 1px solid rgba(255, 255, 255, 0.1); }
+        #logout-btn .item-icon { color: #ff6b6b; }
+        .dashboard-content { padding: 3rem 2rem; max-width: 1400px; margin: 0 auto; }
+        .welcome-title { font-size: 2.5rem; font-weight: 700; margin-bottom: 2rem; }
+        .content-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2rem; }
+        .content-card { background: rgba(22, 22, 22, 0.5); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px; padding: 2rem; transition: all 0.3s ease; display: flex; flex-direction: column; }
+        .content-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .card-header { display: flex; align-items: center; gap: 1rem; font-size: 1.5rem; font-weight: 600; margin-bottom: 1rem; color: #fff; }
+        .card-header .icon { font-size: 1.8rem; color: #a166e4; }
+        .card-body { flex-grow: 1; display: flex; flex-direction: column; }
+        .card-body p { color: rgba(255, 255, 255, 0.7); }
+        .overview-list { list-style: none; margin-top: 1.5rem; flex-grow: 1; }
+        .overview-item { display: flex; justify-content: space-between; align-items: center; padding: 0.8rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+        .overview-item:last-child { border-bottom: none; }
+        .overview-item .item-details { display: flex; flex-direction: column; }
+        .overview-item .item-title { font-weight: 500; color: #fff; }
+        .overview-item .item-meta { font-size: 0.85rem; color: rgba(255, 255, 255, 0.6); }
+        .overview-item .item-date { font-size: 0.9rem; font-weight: 500; color: rgba(255, 255, 255, 0.7); white-space: nowrap; margin-left: 1rem; }
+        .btn-view-all { display: inline-block; padding: 0.75rem 1.5rem; background: rgba(255, 255, 255, 0.1); color: #fff; border-radius: 8px; font-weight: 500; transition: background-color 0.3s ease; margin-top: 1.5rem; text-align: center; }
+        .btn-view-all:hover { background: rgba(255, 255, 255, 0.2); }
+        .chat-widget-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(10, 10, 10, 0.5); backdrop-filter: blur(8px); z-index: 2000; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; }
+        .chat-widget-container.show { opacity: 1; visibility: visible; }
+        #cometchat { position: relative; width: 90%; max-width: 800px; height: 80%; max-height: 600px; border-radius: 16px; overflow: hidden; background: #161616; border: 1px solid rgba(255, 255, 255, 0.1); transform: scale(0.95); transition: transform 0.3s ease; }
+        .chat-widget-container.show #cometchat { transform: scale(1); }
+        .close-chat-btn { position: absolute; top: 15px; right: 20px; font-size: 1.5rem; color: rgba(255, 255, 255, 0.7); cursor: pointer; z-index: 2010; transition: all 0.2s ease; }
+        .close-chat-btn:hover { color: #fff; transform: rotate(90deg); }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo"><i class="fas fa-graduation-cap"></i> CampusVibe</div>
+            <div class="nav-menu">
+                <div class="nav-item" id="chat-icon" title="Chat"><i class="fas fa-comments"></i></div>
+                <div class="nav-item" id="notification-icon" title="Notifications">
+                    <i class="fas fa-bell"></i>
+                    <span class="icon-badge">3</span>
+                    <div class="dropdown" id="notification-dropdown">
+                        <div class="dropdown-header">Notifications</div>
+                        <a href="#" class="dropdown-item"><i class="fas fa-calendar-plus item-icon"></i><div class="item-text-wrapper"><p class="item-text"><span class="item-title">New Event:</span> Guest Lecture on AI has been posted.</p></div></a>
+                        <a href="#" class="dropdown-item"><i class="fas fa-comment-dots item-icon"></i><div class="item-text-wrapper"><p class="item-text"><span class="item-title">Priya</span> commented on your Thermodynamics notes.</p></div></a>
+                        <a href="#" class="dropdown-item"><i class="fas fa-users item-icon"></i><div class="item-text-wrapper"><p class="item-text"><span class="item-title">CSE Department</span> added you to a new group chat.</p></div></a>
+                    </div>
+                </div>
+                <div class="nav-item" id="profile-icon" title="Profile">
+                    <i class="fas fa-user-circle"></i>
+                    <div class="dropdown" id="profile-dropdown">
+                        <div class="dropdown-item"><i class="fas fa-user-astronaut item-icon" style="font-size: 1.8rem;"></i><div class="item-text-wrapper"><p class="item-title">Super Hero</p><p class="item-text">aman.sharma@campus.edu</p></div></div>
+                        <a href="profile.html" class="dropdown-item"><i class="fas fa-user-edit item-icon"></i><div class="item-text-wrapper"><p class="item-title">My Profile</p></div></a>
+                        <a href="settings.html" class="dropdown-item"><i class="fas fa-cog item-icon"></i><div class="item-text-wrapper"><p class="item-title">Settings</p></div></a>
+                        <a href="#" class="dropdown-item" id="logout-btn"><i class="fas fa-sign-out-alt item-icon"></i><div class="item-text-wrapper"><p class="item-title">Logout</p></div></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <main class="dashboard-content">
+        <h1 class="welcome-title">Tune into Your Campus.</h1>
+        <div class="content-grid">
+            <div class="content-card">
+                <div class="card-header"><i class="fas fa-calendar-days icon"></i><span>Upcoming Events</span></div>
+                <div class="card-body">
+                    <p>Check out the latest fests, workshops, and seminars happening on campus.</p>
+                    <ul class="overview-list">
+                        <li class="overview-item"><div class="item-details"><span class="item-title">Annual Tech Fest 'Innovate 2025'</span><span class="item-meta">CSE Department</span></div><span class="item-date">Aug 05</span></li>
+                        <li class="overview-item"><div class="item-details"><span class="item-title">Photography Workshop</span><span class="item-meta">Arts & Culture Club</span></div><span class="item-date">Aug 12</span></li>
+                        <li class="overview-item"><div class="item-details"><span class="item-title">Guest Lecture on AI</span><span class="item-meta">Auditorium Hall</span></div><span class="item-date">Aug 20</span></li>
+                    </ul>
+                    <a href="events.html" class="btn-view-all">View All Events</a>
+                </div>
+            </div>
+            <div class="content-card">
+                <div class="card-header"><i class="fas fa-book-open icon"></i><span>Recent Notes</span></div>
+                <div class="card-body">
+                    <p>Find and share study materials, lecture notes, and resources with your peers.</p>
+                    <ul class="overview-list">
+                        <li class="overview-item"><div class="item-details"><span class="item-title">Data Structures - Unit 3</span><span class="item-meta">Shared by Alex</span></div><span class="item-date">Jul 29</span></li>
+                        <li class="overview-item"><div class="item-details"><span class="item-title">Thermodynamics Lab Report</span><span class="item-meta">Shared by Priya</span></div><span class="item-date">Jul 28</span></li>
+                        <li class="overview-item"><div class="item-details"><span class="item-title">Python Programming Basics</span><span class="item-meta">Shared by Admin</span></div><span class="item-date">Jul 25</span></li>
+                    </ul>
+                    <a href="notes.html" class="btn-view-all">View All Notes</a>
+                </div>
+            </div>
+        </div>
+    </main>
+    <div class="chat-widget-container" id="chat-widget-container">
+        <div class="close-chat-btn" id="close-chat-btn"><i class="fas fa-times"></i></div>
+        <div id="cometchat"></div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const notificationIcon = document.getElementById('notification-icon');
+            const notificationDropdown = document.getElementById('notification-dropdown');
+            const profileIcon = document.getElementById('profile-icon');
+            const profileDropdown = document.getElementById('profile-dropdown');
+            const toggleDropdown = (dropdown) => {
+                if (dropdown === notificationDropdown) { profileDropdown.classList.remove('show'); } 
+                else if (dropdown === profileDropdown) { notificationDropdown.classList.remove('show'); }
+                dropdown.classList.toggle('show');
+            };
+            notificationIcon.addEventListener('click', (e) => { e.stopPropagation(); toggleDropdown(notificationDropdown); });
+            profileIcon.addEventListener('click', (e) => { e.stopPropagation(); toggleDropdown(profileDropdown); });
+            window.addEventListener('click', () => { notificationDropdown.classList.remove('show'); profileDropdown.classList.remove('show'); });
+            notificationDropdown.addEventListener('click', (e) => e.stopPropagation());
+            profileDropdown.addEventListener('click', (e) => e.stopPropagation());
+            const logoutBtn = document.querySelector('#logout-btn');
+            if(logoutBtn) { logoutBtn.addEventListener('click', () => { alert('Logging out...'); window.location.href = 'index.html'; }); }
+            const chatIcon = document.getElementById('chat-icon');
+            const chatWidgetContainer = document.getElementById('chat-widget-container');
+            const closeChatBtn = document.getElementById('close-chat-btn');
+            let isChatLaunched = false;
+            const openChat = () => {
+                chatWidgetContainer.classList.add('show');
+                if (!isChatLaunched) {
+                    CometChatWidget.init({ "appID": "2788204a33a76b64", "appRegion": "IN", "authKey": "c44863a0e5baecb17faaabc83ba21b9905837b4e" }).then(response => {
+                        console.log("Initialization completed successfully");
+                        CometChatWidget.login({ "uid": "superhero1" }).then(response => {
+                            console.log("User login successful:", response);
+                            CometChatWidget.launch({ "widgetID": "0646f91b-4237-4d5d-a214-3529a9600628", "target": "#cometchat", "roundedCorners": "true", "height": "100%", "width": "100%", "defaultID": 'superhero1', "defaultType": 'user' });
+                            isChatLaunched = true;
+                        }, error => { console.log("User login failed with error:", error); });
+                    }, error => { console.log("Initialization failed with error:", error); });
+                }
+            };
+            const closeChat = () => { chatWidgetContainer.classList.remove('show'); };
+            chatIcon.addEventListener('click', (e) => { e.stopPropagation(); notificationDropdown.classList.remove('show'); profileDropdown.classList.remove('show'); openChat(); });
+            closeChatBtn.addEventListener('click', closeChat);
+            chatWidgetContainer.addEventListener('click', (e) => { if (e.target === chatWidgetContainer) { closeChat(); } });
+        });
+    </script>
+</body>
+</html>

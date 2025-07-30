@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - CampusVibe</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #a166e4;
+            --dark-bg: #0a0a0a;
+            --card-bg: rgba(22, 22, 22, 0.5);
+            --text-light: rgba(255, 255, 255, 0.8);
+            --text-dark: rgba(255, 255, 255, 0.6);
+            --border-color: rgba(255, 255, 255, 0.1);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; line-height: 1.6; background: var(--dark-bg); color: #fff; }
+        a { text-decoration: none; color: inherit; }
+        .bg-animation { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background: linear-gradient(45deg, #667eea, #764ba2, #f093fb, #f5576c, #4facfe, #00f2fe); background-size: 400% 400%; animation: gradientShift 15s ease infinite; }
+        @keyframes gradientShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        .navbar { padding: 1rem 2rem; background: rgba(22, 22, 22, 0.6); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 1000; }
+        .nav-container { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+        .logo a { display: flex; align-items: center; gap: 0.5rem; font-size: 1.8rem; font-weight: 800; color: #fff; }
+        .main-content { padding: 3rem 2rem; max-width: 900px; margin: 0 auto; }
+        .page-title { font-size: 2.5rem; font-weight: 700; margin-bottom: 2rem; }
+        .profile-card { background: var(--card-bg); backdrop-filter: blur(15px); border: 1px solid var(--border-color); border-radius: 16px; padding: 2rem; text-align: center; }
+        .profile-avatar { width: 120px; height: 120px; border-radius: 50%; border: 3px solid var(--primary-color); margin: 0 auto 1.5rem auto; font-size: 4rem; display: flex; justify-content: center; align-items: center; background: #333; }
+        .profile-name { font-size: 2rem; font-weight: 600; }
+        .profile-email { color: var(--text-dark); margin-bottom: 2rem; }
+        .profile-details { list-style: none; text-align: left; margin: 2rem 0; }
+        .profile-details li { padding: 1rem; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; }
+        .profile-details li:last-child { border-bottom: none; }
+        .profile-details .detail-label { color: var(--text-dark); }
+        .profile-details .detail-value { font-weight: 500; }
+        .btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.5rem; background: var(--primary-color); color: #fff; border-radius: 8px; font-weight: 500; transition: background-color 0.3s ease; border: none; cursor: pointer; }
+        .btn:hover { background-color: #8e44ad; }
+        
+        /* NEW: Edit Mode Styles */
+        .edit-mode {
+            display: none;
+            width: 60%;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid var(--border-color);
+            color: #fff;
+            padding: 0.5rem;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            text-align: right;
+        }
+        .is-editing .view-mode { display: none; }
+        .is-editing .edit-mode { display: inline-block; }
+
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo"><a href="dashboard.html"><i class="fas fa-graduation-cap"></i> CampusVibe</a></div>
+        </div>
+    </nav>
+    <main class="main-content">
+        <h1 class="page-title">My Profile</h1>
+        <div class="profile-card" id="profile-card">
+            <div class="profile-avatar">
+                <i class="fas fa-user-astronaut"></i>
+            </div>
+            
+            <div class="value-wrapper">
+                <h2 class="profile-name view-mode" data-field="name">Super Hero</h2>
+                <input type="text" class="edit-mode" data-field="name" value="Super Hero" style="font-size: 2rem; font-weight: 600; text-align:center; margin-bottom: 0.5rem; width: 100%;">
+            </div>
+             <div class="value-wrapper">
+                <p class="profile-email view-mode" data-field="email">super.hero@campus.edu</p>
+                <input type="email" class="edit-mode" data-field="email" value="super.hero@campus.edu" style="text-align:center; width: 100%;">
+            </div>
+
+            <ul class="profile-details">
+                <li>
+                    <span class="detail-label">Major</span>
+                    <div class="value-wrapper">
+                        <span class="detail-value view-mode" data-field="major">Computer Science & Engineering</span>
+                        <input type="text" class="edit-mode" data-field="major" value="Computer Science & Engineering">
+                    </div>
+                </li>
+                <li>
+                    <span class="detail-label">Year</span>
+                    <div class="value-wrapper">
+                        <span class="detail-value view-mode" data-field="year">3rd Year</span>
+                        <input type="text" class="edit-mode" data-field="year" value="3rd Year">
+                    </div>
+                </li>
+                <li>
+                    <span class="detail-label">Member Since</span>
+                    <span class="detail-value view-mode">July 2023</span>
+                </li>
+            </ul>
+            <button class="btn" id="edit-profile-btn">
+                <i class="fas fa-pencil-alt"></i>
+                <span>Edit Profile</span>
+            </button>
+        </div>
+    </main>
+
+    <script>
+        // --- Profile Edit/Save Logic ---
+        const profileCard = document.getElementById('profile-card');
+        const editBtn = document.getElementById('edit-profile-btn');
+        const editBtnIcon = editBtn.querySelector('i');
+        const editBtnText = editBtn.querySelector('span');
+
+        editBtn.addEventListener('click', () => {
+            const isEditing = profileCard.classList.contains('is-editing');
+            const valueWrappers = profileCard.querySelectorAll('.value-wrapper');
+
+            if (isEditing) {
+                // --- SAVE CHANGES ---
+                valueWrappers.forEach(wrapper => {
+                    const viewEl = wrapper.querySelector('.view-mode');
+                    const editEl = wrapper.querySelector('.edit-mode');
+                    if (viewEl && editEl) {
+                        viewEl.textContent = editEl.value;
+                    }
+                });
+
+                profileCard.classList.remove('is-editing');
+                editBtnText.textContent = 'Edit Profile';
+                editBtnIcon.className = 'fas fa-pencil-alt';
+                alert('Profile updated successfully!');
+            } else {
+                // --- ENTER EDIT MODE ---
+                 valueWrappers.forEach(wrapper => {
+                    const viewEl = wrapper.querySelector('.view-mode');
+                    const editEl = wrapper.querySelector('.edit-mode');
+                     if (viewEl && editEl) {
+                        editEl.value = viewEl.textContent;
+                    }
+                });
+
+                profileCard.classList.add('is-editing');
+                editBtnText.textContent = 'Save Changes';
+                editBtnIcon.className = 'fas fa-save';
+            }
+        });
+    </script>
+</body>
+</html>

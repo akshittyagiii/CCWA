@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - YourProject</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #0a0a0a; color: #ffffff; display: flex; justify-content: center; align-items: center; min-height: 100vh; overflow: hidden; }
+        .bg-animation { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background: linear-gradient(45deg, #f361a3, #a166e4, #f093fb, #f5576c, #4facfe, #00f2fe); background-size: 400% 400%; animation: gradientShift 15s ease infinite; }
+        @keyframes gradientShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        .auth-container { width: 100%; max-width: 420px; padding: 2rem; z-index: 10; }
+        .auth-box { background: rgba(22, 22, 22, 0.6); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; padding: 2.5rem; text-align: center; animation: fadeIn 0.5s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+        h2 { font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem; }
+        .form-subtitle { color: rgba(255, 255, 255, 0.7); margin-bottom: 2rem; }
+        .form-group { position: relative; margin-bottom: 1.5rem; }
+        .icon { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: rgba(255, 255, 255, 0.5); }
+        .form-input { width: 100%; padding: 1rem 1rem 1rem 2.5rem; background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 10px; color: #fff; font-size: 1rem; transition: all 0.3s ease; }
+        .form-input:focus { outline: none; border-color: #a166e4; box-shadow: 0 0 15px rgba(161, 102, 228, 0.5); }
+        .btn-submit { width: 100%; padding: 1rem; border: none; border-radius: 10px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; background: linear-gradient(45deg, #f361a3, #a166e4); color: white; margin-top: 1rem; }
+        .btn-submit:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(161, 102, 228, 0.4); }
+        .toggle-link { margin-top: 2rem; color: rgba(255, 255, 255, 0.7); }
+        .toggle-link a { color: #c9a3ff; font-weight: 600; text-decoration: none; }
+        .home-link { margin-top: 1rem; }
+        .home-link a { color: rgba(255, 255, 255, 0.6); text-decoration: none; font-size: 0.9rem; }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+    <div class="auth-container">
+        <div class="auth-box">
+            <form id="loginForm">
+                <h2>Welcome Back!</h2>
+                <p class="form-subtitle">Login to continue to your dashboard.</p>
+                <div class="form-group">
+                    <i class="fas fa-envelope icon"></i>
+                    <input type="email" class="form-input" placeholder="Email" required>
+                </div>
+                <div class="form-group">
+                    <i class="fas fa-lock icon"></i>
+                    <input type="password" class="form-input" placeholder="Password" required>
+                </div>
+                <button type="submit" class="btn-submit">Login</button>
+                <p class="toggle-link">Don't have an account? <a href="signup.html">Sign Up</a></p>
+            </form>
+            <p class="home-link"><a href="Landing.html"><i class="fas fa-arrow-left"></i> Back to Home</a></p>
+        </div>
+    </div>
+
+    <script>
+        // Listen for the form submission event
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            // Prevent the form from reloading the page
+            event.preventDefault();
+
+            // Save the login status in the browser's memory
+            localStorage.setItem('isUserLoggedIn', 'true');
+
+            // Redirect the user to the dashboard page
+            window.location.href = 'dashboard.html';
+        });
+    </script>
+</body>
+</html>

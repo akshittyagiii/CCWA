@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - CampusVibe</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #a166e4;
+            --dark-bg: #0a0a0a;
+            --card-bg: rgba(22, 22, 22, 0.5);
+            --text-light: rgba(255, 255, 255, 0.8);
+            --text-dark: rgba(255, 255, 255, 0.6);
+            --border-color: rgba(255, 255, 255, 0.1);
+            --danger-color: #ff6b6b;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; line-height: 1.6; background: var(--dark-bg); color: #fff; }
+        a { text-decoration: none; color: inherit; }
+        .bg-animation { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background: linear-gradient(45deg, #667eea, #764ba2, #f093fb, #f5576c, #4facfe, #00f2fe); background-size: 400% 400%; animation: gradientShift 15s ease infinite; }
+        @keyframes gradientShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        .navbar { padding: 1rem 2rem; background: rgba(22, 22, 22, 0.6); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 1000; }
+        .nav-container { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.8rem; font-weight: 800; color: #fff; }
+        .logo a { display: flex; align-items: center; gap: 0.5rem; }
+        .main-content { padding: 3rem 2rem; max-width: 900px; margin: 0 auto; }
+        .page-title { font-size: 2.5rem; font-weight: 700; margin-bottom: 2rem; }
+        .settings-card { background: var(--card-bg); backdrop-filter: blur(15px); border: 1px solid var(--border-color); border-radius: 16px; margin-bottom: 2rem; overflow: hidden; }
+        .card-header { padding: 1.5rem; font-size: 1.25rem; font-weight: 600; border-bottom: 1px solid var(--border-color); }
+        .card-body { padding: 1.5rem; }
+        .setting-item { display: flex; justify-content: space-between; align-items: center; padding: 1rem 0; border-bottom: 1px solid var(--border-color); }
+        .setting-item:last-child { border-bottom: none; padding-bottom: 0; }
+        .setting-item:first-child { padding-top: 0; }
+        .setting-label { font-size: 1rem; }
+        .btn { display: inline-block; padding: 0.5rem 1rem; background: var(--primary-color); color: #fff; border-radius: 8px; font-weight: 500; transition: background-color 0.3s ease, color 0.3s ease; border: none; cursor: pointer; }
+        .btn.active { background: var(--primary-color); }
+        .btn.inactive { background: rgba(255,255,255,0.1); }
+        .btn.inactive:hover { background: rgba(255,255,255,0.2); }
+        .btn-danger { background-color: var(--danger-color); }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+    <nav class="navbar">
+        <div class="nav-container">
+             <div class="logo"><a href="dashboard.html"><i class="fas fa-graduation-cap"></i> CampusVibe</a></div>
+        </div>
+    </nav>
+    <main class="main-content">
+        <h1 class="page-title">Settings</h1>
+
+        <div class="settings-card">
+            <div class="card-header">Account</div>
+            <div class="card-body">
+                <div class="setting-item">
+                    <span class="setting-label">Change Email</span>
+                    <button class="btn inactive" id="change-email-btn">Change</button>
+                </div>
+                <div class="setting-item">
+                    <span class="setting-label">Change Password</span>
+                    <button class="btn inactive" id="change-password-btn">Change</button>
+                </div>
+                 <div class="setting-item">
+                    <span class="setting-label">Deactivate Account</span>
+                    <button class="btn btn-danger" id="deactivate-btn">Deactivate</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="settings-card">
+            <div class="card-header">Notifications</div>
+            <div class="card-body">
+                <div class="setting-item">
+                    <span class="setting-label">Email Notifications</span>
+                    <button class="btn active" data-setting="email">Enable</button>
+                </div>
+                <div class="setting-item">
+                    <span class="setting-label">New Event Alerts</span>
+                     <button class="btn active" data-setting="events">Enable</button>
+                </div>
+                <div class="setting-item">
+                    <span class="setting-label">Chat Message Alerts</span>
+                    <button class="btn inactive" data-setting="chat">Disable</button>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script>
+        // Account Settings buttons
+        document.getElementById('change-email-btn').addEventListener('click', () => {
+            alert('A form to change your email would appear here.');
+        });
+
+        document.getElementById('change-password-btn').addEventListener('click', () => {
+            alert('A form to change your password would appear here.');
+        });
+
+        document.getElementById('deactivate-btn').addEventListener('click', () => {
+            const isConfirmed = confirm('Are you sure you want to deactivate your account? This action cannot be undone.');
+            if (isConfirmed) {
+                alert('Your account has been deactivated.');
+                // Here you would typically redirect the user or log them out
+                // window.location.href = 'goodbye.html';
+            }
+        });
+
+        // Notification toggle buttons
+        const notificationButtons = document.querySelectorAll('[data-setting]');
+        notificationButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const settingName = button.dataset.setting;
+                const isEnabled = button.classList.toggle('active');
+                button.classList.toggle('inactive');
+
+                if (isEnabled) {
+                    button.textContent = 'Enable';
+                    alert(`${settingName.charAt(0).toUpperCase() + settingName.slice(1)} notifications have been enabled.`);
+                } else {
+                    button.textContent = 'Disable';
+                    alert(`${settingName.charAt(0).toUpperCase() + settingName.slice(1)} notifications have been disabled.`);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
